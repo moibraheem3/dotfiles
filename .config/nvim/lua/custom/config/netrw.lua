@@ -7,6 +7,7 @@ vim.g.netrw_banner = 1
 vim.g.netrw_clipboard = 0
 vim.g.netrw_sizestyle = 'H'
 vim.g.netrw_sort_by = 'exten'
+vim.g.netrw_maxfilenamelen = 66
 
 -- show file in netrw
 -- more info: https://superuser.com/questions/1531456/how-to-reveal-a-file-in-vim-netrw-treeview
