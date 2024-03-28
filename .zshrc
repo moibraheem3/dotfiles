@@ -33,3 +33,4 @@ export GOPATH="/home/mohamed/go"
 export PATH="$PATH:$GOBIN:$GOPATH/bin"
 
 export EDITOR="nvim"
+export LC_ALL=en_GB.utf8
