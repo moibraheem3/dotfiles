@@ -25,14 +25,14 @@ lsp_zero.on_attach(function(_, _)
   -- end
 end)
 
-require('luasnip.loaders.from_vscode').lazy_load()
+-- require('luasnip.loaders.from_vscode').lazy_load()
 
 local cmp_action = lsp_zero.cmp_action()
 local cmp = require 'cmp'
 cmp.setup {
   sources = cmp.config.sources {
     { name = 'nvim_lsp' },
-    { name = 'luasnip' },
+    -- { name = 'luasnip' },
     { name = 'buffer' },
     { name = 'path' },
     { name = 'nvim_lua' },
