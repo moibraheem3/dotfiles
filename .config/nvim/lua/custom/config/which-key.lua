@@ -11,7 +11,6 @@ return {
     D = { ':bufdo bd<cr>', '[e] [b]uffers all [D]elete' },
   },
   u = { '<CMD>UndotreeToggle<CR><CMD>UndotreeFocus<CR>', '[u]ndo tree' },
-  j = { ':RunJobs<CR>', '[j]obs Runner' },
   s = {
     c = { ':cdo s//', '[s]earch quickfix [s]elected', silent = false },
   },
