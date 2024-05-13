@@ -45,6 +45,7 @@ local options = {
   showcmd = false, -- Don't show the command in the last line
   ruler = false, -- Don't show the ruler
   laststatus = 3,
+  inccommand = 'split',
 }
 
 for k, v in pairs(options) do
