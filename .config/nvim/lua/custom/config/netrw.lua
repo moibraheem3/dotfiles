@@ -21,14 +21,3 @@ vim.api.nvim_create_user_command('ExploreFind', function()
   vim.cmd.normal 'n'
   vim.cmd.normal 'zz'
 end, {})
-
-vim.api.nvim_create_user_command('LexploreFind', function()
-  local relative_path = vim.fn.expand '%:h'
-  vim.cmd.let '@/=expand("%:t")'
-  if string.len(relative_path) == 0 then
-    vim.cmd.let "@/='./'"
-  end
-  vim.cmd('Lexplore ' .. relative_path)
-  vim.cmd.normal 'n'
-  vim.cmd.normal 'zz'
-end, {})
