@@ -1,7 +1,15 @@
 return {
   'stevearc/oil.nvim',
+  -- Optional dependencies
+  -- dependencies = { 'nvim-tree/nvim-web-devicons' },
   config = function()
     require('oil').setup {
+      columns = {
+        -- 'icon',
+        -- 'permissions',
+        -- 'size',
+        -- 'mtime',
+      },
       keymaps = {
         ['<C-l>'] = false,
         ['<M-l>'] = 'actions.refresh',
