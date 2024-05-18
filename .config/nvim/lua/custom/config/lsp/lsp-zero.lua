@@ -18,6 +18,9 @@ lsp_zero.on_attach(function(_, _)
   vim.keymap.set('n', '<leader>lj', vim.diagnostic.goto_next, { desc = 'Go to next diagnostic message' })
   vim.keymap.set('n', '<leader>le', vim.diagnostic.open_float, { desc = 'Open floating diagnostic message' })
   vim.keymap.set('n', '<leader>lq', vim.diagnostic.setloclist, { desc = 'Open diagnostics list' })
+  vim.keymap.set('n', '<leader>lnt', function()
+    vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({}))
+  end, { desc = 'Toggle inlay hints' })
   -- if vim.lsp.buf.range_code_action then
   --   vim.keymap.set('x', '<leader>la', vim.lsp.buf.range_code_action, { desc = '[l]sp code [a]ction' })
   -- else
@@ -32,7 +35,7 @@ local cmp = require 'cmp'
 cmp.setup {
   sources = cmp.config.sources {
     { name = 'nvim_lsp' },
-    -- { name = 'luasnip' },
+    { name = 'luasnip' },
     { name = 'buffer' },
     { name = 'path' },
     { name = 'nvim_lua' },
