@@ -15,9 +15,4 @@ return {
       scope = { enabled = false },
     },
   },
-  {
-    'numToStr/Comment.nvim',
-    event = { 'BufReadPre', 'BufNewFile' },
-    opts = {},
-  },
 }
