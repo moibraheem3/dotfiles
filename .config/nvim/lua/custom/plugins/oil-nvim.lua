@@ -15,6 +15,7 @@ return {
         ['<M-l>'] = 'actions.refresh',
         ['<C-h>'] = false,
         ['<M-h>'] = 'actions.select_split',
+        ['<leader>e'] = 'actions.close',
       },
       view_options = {
         show_hidden = true,
