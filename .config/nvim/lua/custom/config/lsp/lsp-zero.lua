@@ -19,7 +19,7 @@ lsp_zero.on_attach(function(_, _)
   vim.keymap.set('n', '<leader>le', vim.diagnostic.open_float, { desc = 'Open floating diagnostic message' })
   vim.keymap.set('n', '<leader>lq', vim.diagnostic.setloclist, { desc = 'Open diagnostics list' })
   vim.keymap.set('n', '<leader>lnt', function()
-    vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({}))
+    vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled {})
   end, { desc = 'Toggle inlay hints' })
   -- if vim.lsp.buf.range_code_action then
   --   vim.keymap.set('x', '<leader>la', vim.lsp.buf.range_code_action, { desc = '[l]sp code [a]ction' })
@@ -53,11 +53,24 @@ cmp.setup {
     ['<S-Tab>'] = cmp_action.luasnip_shift_supertab(),
   },
   formatting = {
-    -- changing the order of fields so the icon is the first
     fields = { 'menu', 'abbr', 'kind' },
-
-    -- here is where the change happens
     format = function(entry, item)
+      if Icons[item.kind] then
+        print('item.kind', item.kind)
+        item.kind = Icons[item.kind] .. item.kind
+      end
+
+      local widths = {
+        abbr = vim.g.cmp_widths and vim.g.cmp_widths.abbr or 40,
+        menu = vim.g.cmp_widths and vim.g.cmp_widths.menu or 30,
+      }
+
+      for key, width in pairs(widths) do
+        if item[key] and vim.fn.strdisplaywidth(item[key]) > width then
+          item[key] = vim.fn.strcharpart(item[key], 0, width - 1) .. '…'
+        end
+      end
+
       return item
     end,
   },
@@ -65,4 +78,46 @@ cmp.setup {
     completion = cmp.config.window.bordered(),
     documentation = cmp.config.window.bordered(),
   },
+}
+
+Icons = {
+  Array = ' ',
+  Boolean = '󰨙 ',
+  Class = ' ',
+  Codeium = '󰘦 ',
+  Color = ' ',
+  Control = ' ',
+  Collapsed = ' ',
+  Constant = '󰏿 ',
+  Constructor = ' ',
+  Copilot = ' ',
+  Enum = ' ',
+  EnumMember = ' ',
+  Event = ' ',
+  Field = ' ',
+  File = ' ',
+  Folder = ' ',
+  Function = '󰊕 ',
+  Interface = ' ',
+  Key = ' ',
+  Keyword = ' ',
+  Method = '󰊕 ',
+  Module = ' ',
+  Namespace = '󰦮 ',
+  Null = ' ',
+  Number = '󰎠 ',
+  Object = ' ',
+  Operator = ' ',
+  Package = ' ',
+  Property = ' ',
+  Reference = ' ',
+  Snippet = ' ',
+  String = ' ',
+  Struct = '󰆼 ',
+  TabNine = '󰏚 ',
+  Text = ' ',
+  TypeParameter = ' ',
+  Unit = ' ',
+  Value = ' ',
+  Variable = '󰀫 ',
 }
