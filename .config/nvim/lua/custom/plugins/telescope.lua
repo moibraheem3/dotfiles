@@ -32,24 +32,24 @@ return {
 
     pcall(telescope.load_extension, 'fzf')
 
-    vim.keymap.set('n', '<leader>?', builtin.oldfiles, { desc = '[?] Find recently opened files' })
-    vim.keymap.set('n', '<leader><space>', builtin.buffers, { desc = '[ ] Find existing buffers' })
-    vim.keymap.set('n', '<leader>sh', builtin.help_tags, { desc = '[S]earch [H]elp' })
-    vim.keymap.set('n', '<leader>sw', builtin.grep_string, { desc = '[S]earch current [W]ord' })
-    vim.keymap.set('n', '<leader>sg', builtin.live_grep, { desc = '[S]earch by [G]rep' })
-    vim.keymap.set('n', '<leader>sd', builtin.diagnostics, { desc = '[S]earch [D]iagnostics' })
-    vim.keymap.set('n', '<leader>sr', builtin.resume, { desc = '[S]earch [R]esume' })
+    vim.keymap.set('n', '<leader>?', builtin.oldfiles, { desc = 'Find recently opened files' })
+    vim.keymap.set('n', '<leader><space>', builtin.buffers, { desc = 'Find existing buffers' })
+    vim.keymap.set('n', '<leader>sh', builtin.help_tags, { desc = 'Search help' })
+    vim.keymap.set('n', '<leader>sw', builtin.grep_string, { desc = 'Search current word' })
+    vim.keymap.set('n', '<leader>sg', builtin.live_grep, { desc = 'Search by grep' })
+    vim.keymap.set('n', '<leader>sd', builtin.diagnostics, { desc = 'Search diagnostics' })
+    vim.keymap.set('n', '<leader>sr', builtin.resume, { desc = 'Search resume' })
 
     vim.keymap.set('n', '<leader>/', function()
       builtin.current_buffer_fuzzy_find(themes.get_dropdown { previewer = false })
-    end, { desc = '[/] Fuzzily search in current buffer' })
+    end, { desc = 'Fuzzily search in current buffer' })
 
     vim.keymap.set('n', '<leader>gf', function()
       builtin.git_files(themes.get_dropdown { previewer = false })
-    end, { desc = 'Search [G]it [F]iles' })
+    end, { desc = 'Search git files' })
 
     vim.keymap.set('n', '<leader>sf', function()
       builtin.find_files(themes.get_dropdown { previewer = false })
-    end, { desc = '[S]earch [F]iles' })
+    end, { desc = 'search files' })
   end,
 }

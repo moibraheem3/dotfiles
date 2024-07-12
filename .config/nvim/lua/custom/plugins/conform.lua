@@ -24,6 +24,6 @@ return {
         async = false,
         timeout_ms = 500,
       }
-    end, { desc = '[l]sp [f]ormat Buffer' })
+    end, { desc = 'Format Buffer' })
   end,
 }

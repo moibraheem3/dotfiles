@@ -78,6 +78,7 @@ case ":$PATH:" in
   *":$PNPM_HOME:"*) ;;
   *) export PATH="$PNPM_HOME:$PATH" ;;
 esac
+alias pnpx="pnpm dlx"
 # pnpm end
 
 # Created by `userpath` on 2023-10-28 11:35:40

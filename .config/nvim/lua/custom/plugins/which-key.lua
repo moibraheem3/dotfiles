@@ -3,14 +3,13 @@ return {
   event = 'VeryLazy',
   lazy = true,
   opts = {
-    window = {
-      border = 'rounded', -- none, single, double, shadow
-    },
+    ---@type false | "classic" | "modern" | "helix"
+    preset = 'modern',
   },
   config = function(_, opts)
     local which_key = require 'which-key'
     which_key.setup(opts)
-    which_key.register(require 'custom.config.which-key', {
+    which_key.add(require 'custom.config.which-key', {
       mode = 'n',
       prefix = '<leader>',
     })

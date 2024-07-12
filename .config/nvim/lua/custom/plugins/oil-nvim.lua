@@ -21,6 +21,6 @@ return {
         show_hidden = true,
       },
     }
-    vim.keymap.set('n', '<leader>e', '<CMD>Oil<CR>', { desc = 'Open parent directory' })
+    vim.keymap.set('n', '<leader>e', '<CMD>Oil<CR>', { desc = 'Open Explorer' })
   end,
 }

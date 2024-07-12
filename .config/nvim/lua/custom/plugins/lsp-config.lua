@@ -73,5 +73,6 @@ return {
 
     require 'custom.config.lsp.lsp-zero'
     require 'custom.config.lsp.templ'
+    require 'custom.config.lsp.godot'
   end,
 }
