@@ -1,6 +1,6 @@
 return {
   'Exafunction/codeium.vim',
-  event = 'VeryLazy',
+  event = { 'BufReadPre', 'BufNewFile' },
   config = function()
     vim.keymap.set('i', '<C-\\>', function()
       return vim.fn['codeium#Accept']()

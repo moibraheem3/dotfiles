@@ -73,3 +73,13 @@ vim.api.nvim_create_autocmd('ColorScheme', {
     vim.api.nvim_set_hl(0, 'NormalFloat', { link = 'Normal' })
   end,
 })
+
+vim.api.nvim_create_autocmd({ 'FileType' }, {
+  pattern = { 'gdscript' },
+  callback = function()
+    vim.cmd [[
+    let &listchars = 'eol:⏎,tab:▸ ,trail:.,nbsp:⎵'
+    setlocal list noet tabstop=2
+    ]]
+  end,
+})

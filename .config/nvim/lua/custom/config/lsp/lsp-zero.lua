@@ -56,7 +56,6 @@ cmp.setup {
     fields = { 'menu', 'abbr', 'kind' },
     format = function(entry, item)
       if Icons[item.kind] then
-        print('item.kind', item.kind)
         item.kind = Icons[item.kind] .. item.kind
       end
 

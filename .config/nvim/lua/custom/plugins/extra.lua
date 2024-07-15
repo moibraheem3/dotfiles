@@ -1,7 +1,11 @@
 return {
   -- Detect tabstop and shiftwidth automatically
   'tpope/vim-sleuth',
-  'mbbill/undotree',
+  {
+    'mbbill/undotree',
+    lazy = true,
+    cmd = 'UndotreeToggle',
+  },
   {
     'lukas-reineke/indent-blankline.nvim',
     main = 'ibl',
