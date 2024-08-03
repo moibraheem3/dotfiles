@@ -5,16 +5,17 @@ return {
     local conform = require 'conform'
     conform.setup {
       formatters_by_ft = {
-        javascript = { { 'prettierd', 'prettier' } },
-        typescript = { { 'prettierd', 'prettier' } },
-        javascriptreact = { { 'prettierd', 'prettier' } },
-        typescriptreact = { { 'prettierd', 'prettier' } },
-        svelte = { { 'prettierd', 'prettier' } },
-        css = { { 'prettierd', 'prettier' } },
-        html = { { 'prettierd', 'prettier' } },
-        json = { { 'prettierd', 'prettier' } },
+        javascript = { 'prettierd', 'prettier' },
+        typescript = { 'prettierd', 'prettier' },
+        javascriptreact = { 'prettierd', 'prettier' },
+        typescriptreact = { 'prettierd', 'prettier' },
+        svelte = { 'prettierd', 'prettier' },
+        css = { 'prettierd', 'prettier' },
+        html = { 'prettierd', 'prettier' },
+        json = { 'prettierd', 'prettier' },
         lua = { 'stylua' },
         cpp = { 'clang_format' },
+        gdscript = { 'gdformat' },
       },
     }
 
