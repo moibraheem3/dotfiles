@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-dir=/disk/Data/wallpaper/dh-wallpapers-main/
+dir=/disk/Data/Wallpapers/
 rofi="rofi -show -dmenu -theme ${HOME}/.config/rofi/wallpaper-selector.rasi"
 
 wallpapers=($(find -L "${dir}" -type f \( -iname \*.jpg -o -iname \*.jpeg -o -iname \*.png -o -iname \*.gif \) | sort ))
@@ -19,7 +19,6 @@ images_view () {
     fi
   done
 }
-
 
 selector() {
   choice=$(images_view | ${rofi})
@@ -51,7 +50,9 @@ selector() {
 
 pywal_gen () {
     ## --cols16 {lighten | darken}
-    wal --cols16 darken -s -i $1
+    wal --cols16 lighten -s -i $1 \
+      --theme ~/.config/wal/colorschemes/dark/catppuccin-gruvbox-material.json
+    # wal --cols16 lighten -s -i $1 #--theme gruvbox
 
     cp -f "${HOME}"/.cache/wal/pywal.json "${HOME}"/.config/presets/user/pywal.json
 
@@ -61,10 +62,9 @@ pywal_gen () {
 
     gradience-cli apply --gtk both -n pywal
 
-    echo "@import url(\"file://$(nix eval -f '<nixpkgs>' --raw adw-gtk3)/share/themes/adw-gtk3-dark/gtk-4.0/gtk-dark.css\");"\
+    echo "@import url(\"file://$(nix eval -f '<nixpkgs>'\
+      --raw adw-gtk3)/share/themes/adw-gtk3-dark/gtk-4.0/gtk-dark.css\");"\
       | cat - ~/.config/gtk-4.0/gtk.css > temp && mv temp ~/.config/gtk-4.0/gtk.css
-
-    themecord -p
 }
 
 hyprpaper () {
@@ -76,13 +76,13 @@ hyprpaper () {
 
 
 change () {
-    pywal_gen $1
+    # pywal_gen $1
     hyprpaper $1
 
-    killall .waybar-wrapped
-    sleep 0.1
-    waybar &
-    swaync-client -rs
+    # killall .waybar-wrapped
+    # sleep 0.1
+    # waybar &
+    # swaync-client -rs
 }
 
 case "$1" in

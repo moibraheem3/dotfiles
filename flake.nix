@@ -7,14 +7,8 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1"; # hyprland development
-    neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
-    themecord = {
-      url = "github:danihek/themecord";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    ghostty = {
-      url = "github:ghostty-org/ghostty";
-    };
+    neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay/";
+    zen-browser.url = "github:0xc000022070/zen-browser-flake";
   };
   outputs = {
     nixpkgs,

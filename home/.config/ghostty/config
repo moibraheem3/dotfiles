@@ -1,0 +1,54 @@
+theme = /home/mohamed/.cache/wal/colors-ghostty
+
+font-family = "FantasqueSansM Nerd Font"
+font-size = 14
+font-feature = -calt
+
+background-opacity = 0.7
+window-decoration = false
+confirm-close-surface = false
+
+# # surface1
+# palette = 0=#404040
+# # red
+# palette = 1=#ea6962
+# # green
+# palette = 2=#a9b665
+# # yellow
+# palette = 3=#d8a657
+# # blue
+# palette = 4=#7daea3
+# # pink
+# palette = 5=#d3869b
+# # teal
+# palette = 6=#89b482
+# # subtext1
+# palette = 7=#d5c4a1
+# # surface2
+# palette = 8=#a89984
+# # red
+# palette = 9=#ea6962
+# # green
+# palette = 10=#a9b665
+# # yellow
+# palette = 11=#d8a657
+# # blue
+# palette = 12=#7daea3
+# # pink
+# palette = 13=#d3869b
+# # teal
+# palette = 14=#89b482
+# # subtext0
+# palette = 15=#bdae93
+# # base
+# background = 1d2021
+# # text
+# foreground = ebdbb2
+# # peach
+# cursor-color = e78a4e
+# # base
+# cursor-text = 1d2021
+# # overlay2
+# selection-background = a89984
+# # text
+# selection-foreground = ebdbb2

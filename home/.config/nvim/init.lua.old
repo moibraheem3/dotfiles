@@ -1,0 +1,12 @@
+require 'config.options'
+require 'config.keymaps'
+-- require 'config.netrw'
+require 'config.autocmds'
+require 'config.lazy'
+
+vim.cmd.colorscheme 'catppuccin'
+--
+-- local project_dir = vim.fn.getcwd() .. '/project.godot'
+-- if vim.fn.filereadable(project_dir) == 1 then
+--   vim.fn.serverstart './godothost'
+-- end

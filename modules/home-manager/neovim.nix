@@ -23,6 +23,7 @@ in {
       prettierd
       nixd
       lua-language-server
+      tree-sitter
     ];
   };
 }

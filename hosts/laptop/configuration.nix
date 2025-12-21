@@ -6,6 +6,8 @@
   inputs,
   host,
   username,
+  lib,
+  config,
   ...
 }: {
   imports = [
@@ -27,6 +29,17 @@
     btrfs = true;
     ntfs = true;
   };
+  virtualisation.docker.enable = true;
+
+  services.fstrim.enable = lib.mkDefault true;
+  # Gnome 40 introduced a new way of managing power, without tlp.
+  # However, these 2 services clash when enabled simultaneously.
+  # https://github.com/NixOS/nixos-hardware/issues/260
+  services.tlp.enable =
+    lib.mkDefault ((lib.versionOlder (lib.versions.majorMinor lib.version) "21.05")
+      || !config.services.power-profiles-daemon.enable);
+  # Hard disk protection if the laptop falls:
+  services.hdapsd.enable = lib.mkDefault true;
 
   networking.hostName = host;
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
@@ -36,6 +49,7 @@
   environment.sessionVariables = {
     NIXOS_OZONE_WL = "1";
     FLAKE = "/home/${username}/dotfiles/";
+    NH_FLAKE = "/home/${username}/dotfiles/";
   };
 
   # Set your time zone.
@@ -86,13 +100,93 @@
     # use the example session manager (no others are packaged yet so this is enabled by default,
     # no need to redefine it in your config for now)
     # media-session.enable = true;
+
+    extraConfig = {
+      pipewire = {
+        "91-null-sinks" = {
+          "context.objects" = [
+            {
+              # A default dummy driver. This handles nodes marked with the "node.always-driver"
+              # properyty when no other driver is currently active. JACK clients need this.
+              factory = "spa-node-factory";
+              args = {
+                "factory.name" = "support.node.driver";
+                "node.name" = "Dummy-Driver";
+                "priority.driver" = 8000;
+              };
+            }
+            {
+              factory = "adapter";
+              args = {
+                "factory.name" = "support.null-audio-sink";
+                "node.name" = "Microphone-Proxy";
+                "node.description" = "Microphone";
+                "media.class" = "Audio/Source/Virtual";
+                "audio.position" = "MONO";
+              };
+            }
+            {
+              factory = "adapter";
+              args = {
+                "factory.name" = "support.null-audio-sink";
+                "node.name" = "Main-Output-Proxy";
+                "node.description" = "Main Output";
+                "media.class" = "Audio/Sink";
+                "audio.position" = "FL,FR";
+              };
+            }
+          ];
+        };
+      };
+      pipewire-pulse = {
+        "92-low-latency" = {
+          "context.properties" = [
+            {
+              name = "libpipewire-module-protocol-pulse";
+              args = {};
+            }
+          ];
+          "pulse.properties" = {
+            "pulse.min.req" = "32/48000";
+            "pulse.default.req" = "32/48000";
+            "pulse.max.req" = "32/48000";
+            "pulse.min.quantum" = "32/48000";
+            "pulse.max.quantum" = "32/48000";
+          };
+          "stream.properties" = {
+            "node.latency" = "32/48000";
+            "resample.quality" = 1;
+          };
+        };
+      };
+    };
+
+    wireplumber.extraConfig = {
+      "99-disable-suspend" = {
+        "monitor.alsa.rules" = [
+          {
+            matches = [
+              {
+                "node.name" = "alsa_input.*";
+              }
+              {
+                "node.name" = "alsa_output.*";
+              }
+            ];
+            actions = {
+              update-props = {
+                "session.suspend-timeout-seconds" = 0;
+              };
+            };
+          }
+        ];
+      };
+    };
   };
 
   services.gvfs.enable = true;
 
   programs = {
-    firefox.enable = true;
-
     hyprland = {
       enable = true;
       package = inputs.hyprland.packages.${pkgs.system}.hyprland; #hyprland-git
@@ -104,19 +198,27 @@
 
     steam = {
       enable = true;
+      gamescopeSession.enable = true;
       remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
       dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
       localNetworkGameTransfers.openFirewall = true; # Open ports in the firewall for Steam Local Network Game Transfers
+
+      package = pkgs.steam.override {
+        extraPkgs = pkgs':
+          with pkgs'; [
+            libxkbcommon
+          ];
+      };
     };
+    gamemode.enable = true;
   };
 
   services.greetd = {
     enable = true;
-    vt = 3;
     settings = {
       default_session = {
         user = username;
-        command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --cmd Hyprland";
+        command = "${pkgs.tuigreet}/bin/tuigreet --time --cmd Hyprland";
       };
     };
   };
@@ -184,13 +286,23 @@
     curl
     gnutar
     unzip
-    godot_4
-    discord
-    inputs.themecord.packages.x86_64-linux.default
-    inputs.ghostty.packages.x86_64-linux.default
+    # inputs.ghostty.packages.x86_64-linux.default
     libreoffice-qt6
-    easyeffects
-    kdePackages.kdeconnect-kde
+    wine
+    wine64
+    winetricks
+    inputs.zen-browser.packages."${pkgs.system}".default
+    (heroic.override {
+      extraPkgs = pkgs: [
+        pkgs.gamescope
+        pkgs.gamemode
+        pkgs.mangohud
+      ];
+    })
+    thunderbird
+    kitty
+    pixieditor
+    quickshell
 
     nh
     eza
@@ -205,7 +317,7 @@
 
     killall
     wget
-    greetd.tuigreet
+    tuigreet
     hyprpaper
     hyprlock
     hypridle
@@ -216,7 +328,6 @@
     wl-clipboard
     wlogout
     pywal16
-    hellwal
     imagemagick
     networkmanagerapplet
     brightnessctl
@@ -226,7 +337,6 @@
     btop
     libnotify
     adw-gtk3
-    gradience
     libsForQt5.qt5.qtwayland
     kdePackages.qtwayland
   ];
@@ -257,7 +367,7 @@
       nerd-fonts.fantasque-sans-mono
       nerd-fonts.fira-code
       vazir-fonts
-      noto-fonts-emoji
+      noto-fonts-color-emoji
       noto-fonts-cjk-sans
       font-awesome
       symbola

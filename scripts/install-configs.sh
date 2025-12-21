@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
 
-set -e
+set -xe
 
-stow --target=$HOME --adopt configs --ignore=zshrc
+stow --target=$HOME --adopt home --ignore=zshrc

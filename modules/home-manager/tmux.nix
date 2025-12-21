@@ -32,6 +32,8 @@
 
     extraConfig = ''
       set-option -sa terminal-overrides ",xterm*:Tc"
+      set-option -g focus-events on
+
       set -g set-clipboard on
       set -g status-position top
       set -g status-bg default

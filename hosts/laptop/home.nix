@@ -13,7 +13,7 @@ in {
   home = {
     username = username;
     homeDirectory = "/home/${username}";
-    stateVersion = "24.05";
+    stateVersion = "25.11";
     sessionVariables = {
       EDITOR = "nvim";
       SUDO_EDITOR = "nvim";
@@ -36,7 +36,6 @@ in {
   gtk = {
     enable = true;
     theme = {
-      # name = "Adwaita";
       name = "adw-gtk3-dark";
     };
     iconTheme = {
@@ -66,15 +65,17 @@ in {
     home-manager.enable = true;
     git = {
       enable = true;
-      userName = "${gitUsername}";
-      userEmail = "${gitEmail}";
-      extraConfig = {
+      settings = {
+        user = {
+          name = "${gitUsername}";
+          email = "${gitEmail}";
+        };
         init.defaultBranch = "main";
       };
     };
     rofi = {
       enable = true;
-      package = pkgs.rofi-wayland;
+      package = pkgs.rofi;
     };
     direnv = {
       enable = true;
@@ -83,9 +84,7 @@ in {
     };
     zsh = {
       enable = true;
-      initExtra = ''
-        source /home/${username}/dotfiles/configs/.zshrc
-      '';
+      initContent = "source /home/${username}/dotfiles/home/.zshrc";
     };
     bash.enable = true;
     starship.enable = true;

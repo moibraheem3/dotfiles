@@ -35,14 +35,16 @@
   # `lsblk -f` to get the uuid
 
   fileSystems."/disk/Data" = {
-    device = "/dev/disk/by-uuid/b46ca6a0-c913-4c22-8d62-4c06ec0bb6d8";
+    device = "/dev/disk/by-uuid/3c96ddb2-8dce-47fa-8af9-cd973407b610";
+    options = [
+      "nofail"
+      "noatime"
+      "data=writeback"
+      "commit=60"
+      "barrier=0"
+      "errors=remount-ro"
+    ];
   };
-
-  # fileSystems."/disk/My Passport" = {
-  #   device = "/dev/disk/by-uuid/52E6B631E6B61567";
-  #   fsType = "ntfs";
-  #   options = ["nofail" "uid=1000" "gid=100" "dmask=007" "fmask=117" "user" "u+rwx" "g+rwx" "o+rwx"];
-  # };
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
   # (the default) this is the recommended approach. When using systemd-networkd it's
