@@ -1,0 +1,74 @@
+{
+  "new_note": {
+    "prefix": "na",
+    "body": [
+      "---",
+      "title: $TM_FILENAME_BASE",
+      "created: ${CURRENT_YEAR}/${CURRENT_MONTH}/${CURRENT_DATE} ${CURRENT_HOUR}:${CURRENT_MINUTE}",
+      "updated: ${CURRENT_YEAR}/${CURRENT_MONTH}/${CURRENT_DATE} ${CURRENT_HOUR}:${CURRENT_MINUTE}",
+      "tags:",
+      "\t- atomic",
+      "---",
+      "",
+      "$0",
+      "",
+      "",
+      "# References"
+    ],
+    "description": "New Atomic Note"
+  },
+  "new_fleeting_note": {
+    "prefix": "nn",
+    "body": [
+      "---",
+      "title: $TM_FILENAME_BASE",
+      "created: ${CURRENT_YEAR}/${CURRENT_MONTH}/${CURRENT_DATE} ${CURRENT_HOUR}:${CURRENT_MINUTE}",
+      "updated: ${CURRENT_YEAR}/${CURRENT_MONTH}/${CURRENT_DATE} ${CURRENT_HOUR}:${CURRENT_MINUTE}",
+      "tags:",
+      "\t- fleeting",
+      "---",
+      "",
+      "$0",
+      "",
+      "",
+      "# References"
+    ],
+    "description": "Fleeting Note"
+  },
+  "new_literature_note": {
+    "prefix": "nq",
+    "body": [
+      "---",
+      "title: $TM_FILENAME_BASE",
+      "created: ${CURRENT_YEAR}/${CURRENT_MONTH}/${CURRENT_DATE} ${CURRENT_HOUR}:${CURRENT_MINUTE}",
+      "updated: ${CURRENT_YEAR}/${CURRENT_MONTH}/${CURRENT_DATE} ${CURRENT_HOUR}:${CURRENT_MINUTE}",
+      "tags:",
+      "\t- quote",
+      "---",
+      "",
+      "$0",
+      "",
+      "",
+      "# References"
+    ],
+    "description": "Literature Note"
+  },
+  "new_project": {
+    "prefix": "np",
+    "body": [
+      "---",
+      "title: $TM_FILENAME_BASE",
+      "created: ${CURRENT_YEAR}/${CURRENT_MONTH}/${CURRENT_DATE} ${CURRENT_HOUR}:${CURRENT_MINUTE}",
+      "updated: ${CURRENT_YEAR}/${CURRENT_MONTH}/${CURRENT_DATE} ${CURRENT_HOUR}:${CURRENT_MINUTE}",
+      "tags:",
+      "\t- project",
+      "---",
+      "",
+      "$0",
+      "",
+      "",
+      "# References"
+    ],
+    "description": "New Project"
+  }
+}

@@ -4,4 +4,5 @@ set -xe
 
 nh os switch .
 
-# nh clean all --keep 3 --dry
+
+# nh clean all --keep 1 --dry --no-gcroots --optimise

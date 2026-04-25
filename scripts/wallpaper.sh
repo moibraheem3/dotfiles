@@ -68,10 +68,8 @@ pywal_gen () {
 }
 
 hyprpaper () {
-    hyprctl hyprpaper unload all
-    hyprctl hyprpaper preload $1
     hyprctl hyprpaper wallpaper ", $1"
-    printf "preload = $1\nwallpaper = , $1" > ~/.config/hypr/hyprpaper.conf
+    sed -i "s|^[[:space:]]*path = .*|\tpath = $1|" ~/.config/hypr/hyprpaper.conf
 }
 
 

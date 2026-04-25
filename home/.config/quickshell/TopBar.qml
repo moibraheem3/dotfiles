@@ -12,10 +12,10 @@ PanelWindow {
     windowHeight: 30
     screen: modelData
     anchors {
-        top: false
+        top: true
         left: true
         right: true
-        bottom: true
+        bottom: false
     }
     implicitHeight: windowHeight
 
@@ -73,6 +73,19 @@ PanelWindow {
             }
 
             Item { width: 0 }
+        }
+    }
+
+    MouseArea {
+        id: mouseArea
+        anchors.fill: parent
+        hoverEnabled: true
+        enabled: trayMenu.visible
+
+        onClicked: {
+            if(trayMenu.visible) {
+                trayMenu.hideMenu()
+            }
         }
     }
 }

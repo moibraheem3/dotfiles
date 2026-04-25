@@ -22,7 +22,7 @@ PopupWindow {
     
     anchor.item: anchorItem ? anchorItem : null
     anchor.rect.x: anchorX
-    anchor.rect.y: anchorY = -(listView.contentHeight + 18)
+    anchor.rect.y: anchorY = -(listView.contentHeight)
 
     function showAt(item, x, y) {
         if (!item) {
@@ -41,7 +41,7 @@ PopupWindow {
     function hideMenu() {
         visible = false
     }
-    
+
     Item {
         anchors.fill: parent
         Keys.onEscapePressed: trayMenu.hideMenu()
@@ -61,7 +61,7 @@ PopupWindow {
         radius: 8
         z: 0
     }
-    
+
     ListView {
         id: listView
         anchors.fill: parent

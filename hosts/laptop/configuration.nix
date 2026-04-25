@@ -189,8 +189,8 @@
   programs = {
     hyprland = {
       enable = true;
-      package = inputs.hyprland.packages.${pkgs.system}.hyprland; #hyprland-git
-      portalPackage = inputs.hyprland.packages.${pkgs.system}.xdg-desktop-portal-hyprland; # xdphls
+      package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland; #hyprland-git
+      portalPackage = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland; # xdphls
       xwayland.enable = true;
     };
     waybar.enable = true;
@@ -218,7 +218,7 @@
     settings = {
       default_session = {
         user = username;
-        command = "${pkgs.tuigreet}/bin/tuigreet --time --cmd Hyprland";
+        command = "${pkgs.tuigreet}/bin/tuigreet --time --cmd start-hyprland";
       };
     };
   };
@@ -291,7 +291,7 @@
     wine
     wine64
     winetricks
-    inputs.zen-browser.packages."${pkgs.system}".default
+    inputs.zen-browser.packages."${pkgs.stdenv.hostPlatform.system}".default
     (heroic.override {
       extraPkgs = pkgs: [
         pkgs.gamescope
@@ -301,8 +301,12 @@
     })
     thunderbird
     kitty
-    pixieditor
     quickshell
+
+    # jetbrains.idea
+    # jetbrains.idea-community
+    obsidian
+    markdown-oxide
 
     nh
     eza

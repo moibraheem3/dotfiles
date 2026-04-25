@@ -9,11 +9,13 @@ vim.schedule(function()
     vim.opt.clipboard = 'unnamedplus'
 end)
 vim.opt.confirm = true
-vim.opt.completeopt = { 'menu', 'menuone', 'noselect', 'fuzzy', 'popup' }
+vim.opt.completeopt = 'menu,menuone,noselect,fuzzy,popup,preview'
 vim.opt.complete = '.,w,b,u,o,F'
+vim.opt.cia = 'kind,abbr,menu'
 vim.opt.wildignorecase = true
-vim.opt.path = { '.', '**' }
-vim.opt.virtualedit = { 'block' }
+vim.opt.path = '.,**'
+vim.opt.virtualedit = 'block'
+vim.opt.list = true
 -- Searching Behaviors
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
@@ -39,60 +41,67 @@ vim.opt.cursorline = false
 vim.opt.scrolloff = 8
 vim.opt.sidescrolloff = 8
 vim.opt.winborder = 'rounded'
+vim.opt.pumheight = 15
+vim.opt.pumwidth = 30
+vim.opt.cmdheight = 0
 -- Code Folding
 vim.opt.foldlevelstart = 99
 vim.opt.foldmethod = 'indent'
 -- Misc
-vim.g.markdown_recommended_style = 0
+-- vim.g.markdown_recommended_style = 0
+vim.g.markdown_folding = 1
 vim.g.c_syntax_for_h = 1
 vim.g.health = { style = 'float' }
 
 -- Plugins
+
 vim.pack.add {
     'https://github.com/stevearc/oil.nvim',
     'https://github.com/neovim/nvim-lspconfig',
     'https://github.com/dmtrKovalenko/fff.nvim',
     { src = 'https://github.com/nvim-treesitter/nvim-treesitter', version = 'main' },
     'https://github.com/stevearc/conform.nvim',
+    'https://github.com/mbbill/undotree',
+    'https://github.com/nvimdev/phoenix.nvim',
 }
 
--- On-demand plugins, not loaded until ":packadd …".
-vim.pack.add({
-    'https://github.com/mbbill/undotree',
-    'https://github.com/tpope/vim-dispatch',
-}, {
-    load = function() end,
-})
-
 -- Keymaps
+
 vim.g.mapleader = ' '
-vim.keymap.set('v', 'p', '"_dP')
-vim.keymap.set('n', '<leader>o', ':so ~/dotfiles/home/.config/nvim/init.lua<cr>')
-vim.keymap.set('n', '<leader>w', ':w<cr>')
-vim.keymap.set('n', '<leader>q', ':q<cr>')
-vim.keymap.set('n', '<leader>gp', ':GBlame<cr>')
+local map = vim.keymap.set
+map('v', 'p', '"_dP')
+map('n', '<leader>o', ':so ~/dotfiles/home/.config/nvim/init.lua<cr>')
+map('n', '<leader>w', ':write<cr>')
+map('n', '<leader>q', ':quit<cr>')
+map('t', '<esc>', '<c-\\><c-n>')
 
-vim.keymap.set('n', '<leader>e', ':Oil<cr>')
-vim.keymap.set('n', '<leader>u', ':UndotreeToggle<cr> :UndotreeFocus<cr>')
+map('n', '<leader>gp', ':GBlame<cr>')
+map('n', '<leader>e', ':Oil<cr>')
+map('n', '<leader>u', ':UndotreeToggle<cr> :UndotreeFocus<cr>')
 
-vim.keymap.set('n', '<leader>sf', require('fff').find_files)
-vim.keymap.set('n', '<leader>sg', ':Zgrep ')
-vim.keymap.set('n', '<leader>su', ':grep <c-r><c-w><cr>')
-
-vim.keymap.set('n', '<leader>lf', function()
-    require('conform').format {}
+map('n', '<leader>sf', require('fff').find_files)
+map('n', '<leader>sg', require('fff').live_grep)
+map('n', '<leader>sn', function()
+    require('fff').find_files_in_dir '~/Documents/notes'
 end)
-vim.keymap.set('n', '<leader>la', vim.lsp.buf.code_action)
-vim.keymap.set('x', '<leader>la', vim.lsp.buf.code_action)
-vim.keymap.set('n', '<leader>lr', vim.lsp.buf.rename)
-vim.keymap.set('n', 'gd', vim.lsp.buf.definition)
-vim.keymap.set('n', 'gD', vim.lsp.buf.declaration)
-vim.keymap.set('n', 'gi', vim.lsp.buf.implementation)
-vim.keymap.set('n', 'go', vim.lsp.buf.type_definition)
-vim.keymap.set('n', 'gr', vim.lsp.buf.references)
-vim.keymap.set('n', 'gs', vim.lsp.buf.signature_help)
-vim.keymap.set('n', '<leader>le', vim.diagnostic.open_float)
-vim.keymap.set('n', '<leader>lq', vim.diagnostic.setloclist)
+map('n', '<leader>gn', function()
+    require('fff').live_grep { cwd = '~/Documents/notes' }
+end)
+
+map({ 'x', 'n' }, '<leader>lf', function()
+    require('conform').format { async = true }
+end)
+
+map({ 'n', 'x' }, '<leader>la', vim.lsp.buf.code_action)
+map('n', '<leader>lr', vim.lsp.buf.rename)
+map('n', 'gd', vim.lsp.buf.definition)
+map('n', 'gD', vim.lsp.buf.declaration)
+map('n', 'gi', vim.lsp.buf.implementation)
+map('n', 'go', vim.lsp.buf.type_definition)
+map('n', 'gr', vim.lsp.buf.references)
+map('n', 'gs', vim.lsp.buf.signature_help)
+map('n', '<leader>le', vim.diagnostic.open_float)
+map('n', '<leader>lq', vim.diagnostic.setqflist)
 
 -- user commands
 
@@ -147,25 +156,6 @@ vim.api.nvim_create_user_command('GBlame', function()
     })
 end, {})
 
-vim.cmd [[
-command! -nargs=1 Cfuzzy call FuzzyFilterQf(<f-args>)
-
-function! FuzzyFilterQf(...) abort
-    call setqflist(matchfuzzy(getqflist(), join(a:000, " "), {'key': 'text'}))
-endfunction
-
-nnoremap <leader>z :Zgrep<space>
-command! -nargs=+ -complete=file_in_path Zgrep call FuzzyFilterGrep(<f-args>)
-function! FuzzyFilterGrep(query, path=".") abort
-    exe "grep! '" .. a:query .. "' " .. a:path
-    let sort_query = substitute(a:query, '\.\*', '', 'g')
-    let sort_query = substitute(sort_query, '\\\(.\)', '\1', 'g')
-    call FuzzyFilterQf(sort_query)
-    cfirst
-    copen
-endfunction
-]]
-
 -- auto commands
 
 vim.api.nvim_create_autocmd('LspAttach', {
@@ -184,7 +174,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
             local function keymap(lhs, rhs, opts, mode)
                 opts = type(opts) == 'string' and { desc = opts } or vim.tbl_extend('error', opts --[[@as table]], { buffer = bufnr })
                 mode = mode or 'n'
-                vim.keymap.set(mode, lhs, rhs, opts)
+                map(mode, lhs, rhs, opts)
             end
 
             local function feedkeys(keys)
@@ -195,7 +185,32 @@ vim.api.nvim_create_autocmd('LspAttach', {
                 return tonumber(vim.fn.pumvisible()) ~= 0
             end
 
-            vim.lsp.completion.enable(true, client.id, bufnr, { autotrigger = true })
+            -- local chars = client.server_capabilities.completionProvider.triggerCharacters
+            -- if chars then
+            --     for i = string.byte 'a', string.byte 'z' do
+            --         if not vim.list_contains(chars, string.char(i)) then
+            --             table.insert(chars, string.char(i))
+            --         end
+            --     end
+            --
+            --     for i = string.byte 'A', string.byte 'Z' do
+            --         if not vim.list_contains(chars, string.char(i)) then
+            --             table.insert(chars, string.char(i))
+            --         end
+            --     end
+            -- end
+
+            vim.lsp.completion.enable(true, client.id, bufnr, {
+                autotrigger = true,
+                convert = function(item)
+                    local kind = lsp.protocol.CompletionItemKind[item.kind] or 'u'
+                    local res = {
+                        kind = '[' .. kind:sub(1, 1):upper() .. ']',
+                        menu = '',
+                    }
+                    return res
+                end,
+            })
 
             -- Use <Tab> to accept a Copilot suggestion, navigate between snippet tabstops,
             -- or select the next completion.
@@ -235,19 +250,14 @@ vim.api.nvim_create_autocmd('TextYankPost', {
         vim.highlight.on_yank()
     end,
 })
+
 vim.api.nvim_create_autocmd('FileType', {
     pattern = { 'typescript', 'typescriptreact', 'javascript', 'css', 'html', 'json', 'yaml', 'markdown', 'vue' },
     callback = function()
         vim.opt.iskeyword:append { '-', '#', '$' }
     end,
 })
-vim.api.nvim_create_autocmd('FileType', {
-    pattern = { 'c' },
-    callback = function()
-        vim.diagnostic.enable(false)
-        vim.cmd [[ set makeprg=./nob ]]
-    end,
-})
+
 vim.api.nvim_create_autocmd('PackChanged', {
     callback = function(ev)
         local name, kind = ev.data.spec.name, ev.data.kind
@@ -259,14 +269,93 @@ vim.api.nvim_create_autocmd('PackChanged', {
         end
     end,
 })
+
 vim.api.nvim_create_autocmd('FileType', {
-    pattern = { 'lua', 'c', 'typescript', 'typescriptreact', 'javascript', 'css', 'html', 'json', 'yaml', 'markdown', 'vue', 'prisma' },
+    pattern = {
+        'lua',
+        'c',
+        'cpp',
+        'typescript',
+        'typescriptreact',
+        'javascript',
+        'css',
+        'html',
+        'json',
+        'yaml',
+        'markdown',
+        'vue',
+        'prisma',
+        'java',
+        'nix',
+    },
     callback = function()
         vim.treesitter.start()
     end,
 })
 
+-- wrap words "softly" (no carriage return)
+local wrap_softly = vim.api.nvim_create_augroup('WrapSoftly', { clear = true })
+vim.api.nvim_create_autocmd({ 'FileType' }, {
+    pattern = { 'gitcommit', 'markdown' },
+    group = wrap_softly,
+    callback = function()
+        vim.opt_local.textwidth = 0
+        vim.opt_local.wrapmargin = 0
+        vim.opt_local.wrap = true
+        vim.opt_local.linebreak = true
+        vim.opt_local.spell = true
+    end,
+})
+
 -- Plugins config
+
+require('vim._core.ui2').enable {
+    enable = true,
+    msg = {
+        targets = {
+            [''] = 'msg',
+            empty = 'cmd',
+            bufwrite = 'msg',
+            confirm = 'cmd',
+            emsg = 'pager',
+            echo = 'msg',
+            echomsg = 'msg',
+            echoerr = 'pager',
+            completion = 'cmd',
+            list_cmd = 'pager',
+            lua_error = 'pager',
+            lua_print = 'msg',
+            progress = 'pager',
+            rpc_error = 'pager',
+            quickfix = 'msg',
+            search_cmd = 'cmd',
+            search_count = 'cmd',
+            shell_cmd = 'pager',
+            shell_err = 'pager',
+            shell_out = 'pager',
+            shell_ret = 'msg',
+            undo = 'msg',
+            verbose = 'pager',
+            wildlist = 'cmd',
+            wmsg = 'msg',
+            typed_cmd = 'cmd',
+        },
+        cmd = {
+            height = 0.5,
+        },
+        dialog = {
+            height = 0.5,
+        },
+        msg = {
+            height = 0.3,
+            timeout = 5000,
+        },
+        pager = {
+            height = 0.5,
+        },
+    },
+}
+
 require('oil').setup {
     keymaps = {
         ['<C-l>'] = false,
@@ -296,7 +385,7 @@ vim.lsp.enable {
     'lua_ls',
     'gopls',
     'nixd',
-    'tailwindcss',
+    -- 'tailwindcss',
     'htmx',
     'templ',
     'gdscript',
@@ -311,6 +400,8 @@ vim.lsp.enable {
     'zls',
     'ccls',
     'vue_ls',
+    'jdtls',
+    'markdown_oxide',
 }
 vim.lsp.config('nixd', {
     settings = {
@@ -360,6 +451,8 @@ vim.lsp.config('lua_ls', {
     },
 })
 
+vim.lsp.config('jdtls', {})
+
 vim.g.fff = {
     lazy_sync = true, -- start syncing only when the picker is open
     debug = {
@@ -367,36 +460,37 @@ vim.g.fff = {
         show_scores = false,
     },
 }
-
 require('fff').setup {
     prompt = '> ',
     title = 'Files',
     keymaps = {
-        close = { '<C-c>', '<Esc>' },
+        close = { '<c-c>', '<esc>' },
     },
-    preview = {
-        enabled = false,
-    },
+    -- preview = {
+    --     enabled = false,
+    -- },
     layout = {
-        height = 0.5,
-        width = 0.5,
+        -- height = 0.5,
+        -- width = 0.5,
         prompt_position = 'top',
-    }
+    },
 }
 
-require('nvim-treesitter').install {
-    'javascript',
-    'typescript',
-    'comment',
-    'tsx',
-    'jsx',
-    'css',
-    'html',
-    'json',
-    'yaml',
-    'markdown',
-    'vue',
-}
+-- require('nvim-treesitter').install {
+--     'javascript',
+--     'typescript',
+--     'comment',
+--     'tsx',
+--     'jsx',
+--     'css',
+--     'html',
+--     'json',
+--     'yaml',
+--     'markdown',
+--     'vue',
+--     'java',
+--     'nix',
+-- }
 
 require('conform').setup {
     formatters = {
@@ -429,6 +523,13 @@ require('conform').setup {
         odin = { 'odinfmt' },
     },
 }
+
+vim.g.phoenix = {
+    excluded_filetypes = { 'terminal', 'nofile', 'quickfix', 'prompt' },
+    snippet = vim.fn.stdpath 'config' .. '/snippets',
+}
+
+---- Colors
 
 local richblack = '#020202'
 local lightbronze = '#b99468'
