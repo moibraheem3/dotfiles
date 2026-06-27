@@ -2,17 +2,16 @@
   description = "Nixos config flake";
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    home-manager = {
-      url = "github:nix-community/home-manager";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1"; # hyprland development
+    # home-manager = {
+    #   url = "github:nix-community/home-manager";
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    # };
+    hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=3"; # hyprland development
     neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay/";
-    zen-browser.url = "github:0xc000022070/zen-browser-flake";
   };
   outputs = {
     nixpkgs,
-    home-manager,
+    # home-manager,
     ...
   } @ inputs: let
     system = "x86_64-linux";
@@ -28,18 +27,18 @@
       };
       modules = [
         ./hosts/${host}/configuration.nix
-        home-manager.nixosModules.home-manager
-        {
-          home-manager.extraSpecialArgs = {
-            inherit inputs;
-            inherit username;
-            inherit host;
-            inherit system;
-          };
-          home-manager.useGlobalPkgs = true;
-          home-manager.useUserPackages = true;
-          home-manager.users.${username} = import ./hosts/${host}/home.nix;
-        }
+        # home-manager.nixosModules.home-manager
+        # {
+        #   home-manager.extraSpecialArgs = {
+        #     inherit inputs;
+        #     inherit username;
+        #     inherit host;
+        #     inherit system;
+        #   };
+        #   home-manager.useGlobalPkgs = true;
+        #   home-manager.useUserPackages = true;
+        #   home-manager.users.${username} = import ./hosts/${host}/home.nix;
+        # }
       ];
     };
   };

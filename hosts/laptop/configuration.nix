@@ -86,6 +86,8 @@
   };
   services.blueman.enable = true;
 
+  services.displayManager.ly.enable = true;
+
   # Enable sound with pipewire.
   services.pulseaudio.enable = false;
   security.rtkit.enable = true;
@@ -193,8 +195,6 @@
       portalPackage = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland; # xdphls
       xwayland.enable = true;
     };
-    waybar.enable = true;
-    xwayland.enable = true;
 
     steam = {
       enable = true;
@@ -211,16 +211,18 @@
       };
     };
     gamemode.enable = true;
-  };
-
-  services.greetd = {
-    enable = true;
-    settings = {
-      default_session = {
-        user = username;
-        command = "${pkgs.tuigreet}/bin/tuigreet --time --cmd start-hyprland";
-      };
+    neovim = {
+      enable = true;
+      package = inputs.neovim-nightly-overlay.packages.${pkgs.stdenv.hostPlatform.system}.neovim;
     };
+    direnv = {
+      enable = true;
+      enableBashIntegration = true;
+      nix-direnv.enable = true;
+    };
+    zsh.enable = true;
+    bash.enable = true;
+    starship.enable = true;
   };
 
   xdg.portal = {
@@ -257,17 +259,19 @@
   };
 
   systemd = {
-    user.services.polkit-gnome-authentication-agent-1 = {
-      description = "polkit-gnome-authentication-agent-1";
-      wantedBy = ["graphical-session.target"];
-      wants = ["graphical-session.target"];
-      after = ["graphical-session.target"];
-      serviceConfig = {
-        Type = "simple";
-        ExecStart = "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";
-        Restart = "on-failure";
-        RestartSec = 1;
-        TimeoutStopSec = 10;
+    user = {
+      services.polkit-gnome-authentication-agent-1 = {
+        description = "polkit-gnome-authentication-agent-1";
+        wantedBy = ["graphical-session.target"];
+        wants = ["graphical-session.target"];
+        after = ["graphical-session.target"];
+        serviceConfig = {
+          Type = "simple";
+          ExecStart = "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";
+          Restart = "on-failure";
+          RestartSec = 1;
+          TimeoutStopSec = 10;
+        };
       };
     };
   };
@@ -286,12 +290,13 @@
     curl
     gnutar
     unzip
+    rofi
     # inputs.ghostty.packages.x86_64-linux.default
     libreoffice-qt6
     wine
     wine64
     winetricks
-    inputs.zen-browser.packages."${pkgs.stdenv.hostPlatform.system}".default
+    # inputs.zen-browser.packages."${pkgs.stdenv.hostPlatform.system}".default
     (heroic.override {
       extraPkgs = pkgs: [
         pkgs.gamescope
@@ -303,10 +308,8 @@
     kitty
     quickshell
 
-    # jetbrains.idea
     # jetbrains.idea-community
     obsidian
-    markdown-oxide
 
     nh
     eza
@@ -319,9 +322,10 @@
     evince
     polkit_gnome
 
+    tmux
+
     killall
     wget
-    tuigreet
     hyprpaper
     hyprlock
     hypridle
@@ -331,18 +335,29 @@
     swappy
     wl-clipboard
     wlogout
-    pywal16
+    # pywal16
     imagemagick
     networkmanagerapplet
     brightnessctl
     playerctl
-    swaynotificationcenter
+    # swaynotificationcenter
 
     btop
     libnotify
     adw-gtk3
-    libsForQt5.qt5.qtwayland
+    qt5.qtwayland
     kdePackages.qtwayland
+
+    # neovim
+    ripgrep
+    fd
+    gcc
+    alejandra
+    stylua
+    prettierd
+    nixd
+    lua-language-server
+    tree-sitter
   ];
 
   # Cachix, Optimization settings and garbage collection automation
@@ -370,7 +385,7 @@
     packages = with pkgs; [
       nerd-fonts.fantasque-sans-mono
       nerd-fonts.fira-code
-      vazir-fonts
+      vazirmatn
       noto-fonts-color-emoji
       noto-fonts-cjk-sans
       font-awesome

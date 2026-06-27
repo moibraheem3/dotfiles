@@ -14,6 +14,8 @@ in {
     enable = true;
     defaultEditor = true;
     package = neovim-nightly;
+    withRuby = false;
+    withPython3 = false;
     extraPackages = with pkgs; [
       ripgrep
       fd

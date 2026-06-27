@@ -1,11 +1,12 @@
 {
     "layer": "top",
-    "position": "bottom",
+    "position": "right",
     "spacing": 0,
-    "height": 26,
+    "width": 28,
     "reload_style_on_change": true,
     "modules-left": [
-        "group/os",
+        // "group/os",
+        "custom/os_button",
         "hyprland/workspaces"
     ],
     "modules-center": [ ],
@@ -13,26 +14,25 @@
         // "bluetooth",
         // "backlight",
         // "network"
-        "privacy", 
+        "privacy",
         "tray",
         "group/sound",
 
         // "custom/notification",
-        // "custom/day",
-        // "custom/date",
         "cpu",
         "memory",
         "hyprland/language",
-        "clock"
+        "battery",
+        "group/clock"
         // "custom/logout"
     ],
 
     "group/os": {
-        "orientation": "horizontal",
-        "drawer": {
-            "transition-duration": 500,
-            "transition-left-to-right": true
-        },
+        // "orientation": "horizontal",
+        // "drawer": {
+        //     "transition-duration": 500,
+        //     "transition-left-to-right": true
+        // },
         "modules": [
             "custom/os_button"
             // "cpu",
@@ -78,9 +78,32 @@
         "interval": 10000
     },
 
+    "group/clock": {
+        "orientation": "vertical",
+        "modules": [
+            "custom/hours",
+            "custom/minutes"
+        ]
+    },
+
+    "custom/hours": {
+        "exec": "date +'%I'",
+        "interval": 100,
+        // "on-click": "swaync-client -t -sw",
+        "on-click": "quickshell ipc call notifications toggle",
+        "tooltip": false
+    },
+
+    "custom/minutes": {
+        "exec": "date +'%M'",
+        "interval": 100,
+        "on-click": "swaync-client -t -sw",
+        "tooltip": false
+    },
+
     "clock": {
-        "format": "{:L%A %d %B %I:%M %p}",
-        // "format": "{:L%I:%M %p}",
+        // "format": "{:L%A %d %B %I:%M %p}",
+        "format": "{:L%I:%M %p}",
         "on-click": "swaync-client -t -sw",
         "tooltip-format": "<tt><small>{calendar}</small></tt>",
         "calendar": {
@@ -109,12 +132,13 @@
             "warning": 30,
             "critical": 15
         },
-        "format": "{icon}:{capacity}%",
+        // "format": "{icon} {capacity}%",
+        "format": "{icon}",
         "format-charging": " {capacity}%",
         "format-plugged": " {capacity}%",
         "format-alt": "{time} {icon}",
         "format-icons": [" ", " ", " ", " ", " "],
-        "tooltip-format": "{time}"
+        "tooltip-format": "{capacity}% | {time}"
     },
 
     "network": {
@@ -160,8 +184,10 @@
     },
 
     "cpu": {
-        // "format": "  {usage}%",
-        "format": "cpu:{usage}%",
+        "format": "󰍛 ",
+        "tooltip-format": "{usage}%",
+        // "format": "󰍛 {usage}%",
+        // "format": "cpu:{usage}%",
         "interval": 30,
         "min-length": 0,
         // "format": "cpu:{usage}%",
@@ -186,17 +212,16 @@
         //   //        "<span color='#ff9977'>▇</span>", // orange
         //   //        "<span color='#dd532e'>█</span>"  // red
         // ],
-        "tooltip": false,
         "on-click": "kitty --title btop -e 'btop'"
     },
     "memory": {
         "interval": 30,
-        // "format": " {percentage}%",
-        "format": "mem:{percentage}%",
+        "format": "󰑹 ",
+        // "format": "󰑹 {percentage}%",
+        // "format": "mem:{percentage}%",
         // "format-alt": "mem:{used:0.1f}G",
         // "format-alt-click": "click",
-        "tooltip": false,
-        "tooltip-format": "{used:0.1f}GB/{total:0.1f}G",
+        "tooltip-format": "{percentage}% | {used:0.1f}GB/{total:0.1f}G",
         "on-click": "kitty --title btop -e 'btop'"
     },
 
@@ -251,8 +276,7 @@
         "modules": [
             // "group/audio",
             "pulseaudio",
-            "pulseaudio#microphone",
-            "battery"
+            "pulseaudio#microphone"
         ]
     },
 
@@ -265,7 +289,7 @@
         "modules": [
             // "custom/expand-icon",
             "pulseaudio",
-            "pulseaudio/slider",
+            // "pulseaudio/slider",
             "pulseaudio#microphone"
         ]
     },
@@ -276,18 +300,21 @@
     },
 
     "pulseaudio": {
-        "format": "{icon} :{volume}%",
-        "format-bluetooth": "{icon}:{volume}%",
-        "tooltip-format": "{volume}% {icon} | {desc}",
+        // "format": "{icon} {volume}%",
+        // "format-bluetooth": "{icon} {volume}%",
+        // "tooltip-format": "{volume}% {icon}  | {desc}",
+        "format": "{icon}",
+        "format-bluetooth": "{icon}",
+        "tooltip-format": "{volume}%",
         "format-muted": " ",
         "format-icons": {
-            "headphone": "",
-            "hands-free": "",
-            "headset": "",
-            "phone": "",
-            "portable": "",
-            "car": "",
-            "default": ["", "", ""]
+            "headphone": " ",
+            "hands-free": " ",
+            "headset": " ",
+            "phone": " ",
+            "portable": " ",
+            "car": " ",
+            "default": ["", " ", " "]
         },
         "on-click": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle",
         "on-click-right": "pavucontrol",
@@ -297,10 +324,11 @@
     },
 
     "pulseaudio#microphone": {
-        "format": "{format_source}:{source_volume}%",
-        "format-source": "",
-        "format-source-muted": "",
-        "tooltip-format": "{source_volume}% {format_source} ",
+        // "format": "{format_source} {source_volume}%",
+        "format": "{format_source}",
+        "format-source": " ",
+        "format-source-muted": " ",
+        "tooltip-format": "{source_volume}%",
         "on-click": "wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle",
         "on-scroll-down": "wpctl set-volume -l 1.0 @DEFAULT_AUDIO_SOURCE@ 5%+",
         "on-scroll-up": "wpctl set-volume @DEFAULT_AUDIO_SOURCE@ 5%-"
@@ -312,15 +340,16 @@
     },
 
     "custom/os_button": {
-        "format": "  Start",
+        // "format": "  Start",
+        "format": " ",
         "on-click": "rofi -show drun -theme ~/.config/rofi/style-2.rasi",
         "tooltip": false
     },
 
     "hyprland/language": {
-        // "format": " :{}",
+        // "format": "  {}",
         "format": "{}",
-        "format-en": "en",
-        "format-ar": "ar"
+        "format-en": "EN",
+        "format-ar": "AR"
     }
 }

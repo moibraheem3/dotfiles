@@ -5,10 +5,10 @@
 }: let
   inherit (import ./variables.nix) gitUsername gitEmail;
 in {
-  imports = [
-    ../../modules/home-manager/neovim.nix
-    ../../modules/home-manager/tmux.nix
-  ];
+  # imports = [
+  #   ../../modules/home-manager/neovim.nix
+  #   ../../modules/home-manager/tmux.nix
+  # ];
 
   home = {
     username = username;
@@ -51,8 +51,11 @@ in {
     gtk3.extraConfig = {
       gtk-application-prefer-dark-theme = 1;
     };
-    gtk4.extraConfig = {
-      # gtk-application-prefer-dark-theme = 1;
+    gtk4 = {
+        extraConfig = {
+            # gtk-application-prefer-dark-theme = 1;
+        };
+        theme = null;
     };
   };
   qt = {
@@ -62,7 +65,7 @@ in {
   };
 
   programs = {
-    home-manager.enable = true;
+    # home-manager.enable = true;
     git = {
       enable = true;
       settings = {

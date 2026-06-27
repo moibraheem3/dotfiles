@@ -63,6 +63,7 @@ vim.pack.add {
     'https://github.com/stevearc/conform.nvim',
     'https://github.com/mbbill/undotree',
     'https://github.com/nvimdev/phoenix.nvim',
+    'https://github.com/sainnhe/gruvbox-material',
 }
 
 -- Keymaps
@@ -313,32 +314,7 @@ require('vim._core.ui2').enable {
     enable = true,
     msg = {
         targets = {
-            [''] = 'msg',
-            empty = 'cmd',
-            bufwrite = 'msg',
-            confirm = 'cmd',
-            emsg = 'pager',
-            echo = 'msg',
-            echomsg = 'msg',
-            echoerr = 'pager',
-            completion = 'cmd',
-            list_cmd = 'pager',
-            lua_error = 'pager',
-            lua_print = 'msg',
-            progress = 'pager',
-            rpc_error = 'pager',
-            quickfix = 'msg',
-            search_cmd = 'cmd',
-            search_count = 'cmd',
-            shell_cmd = 'pager',
-            shell_err = 'pager',
-            shell_out = 'pager',
-            shell_ret = 'msg',
-            undo = 'msg',
-            verbose = 'pager',
-            wildlist = 'cmd',
-            wmsg = 'msg',
-            typed_cmd = 'cmd',
+            default = 'msg',
         },
         cmd = {
             height = 0.5,
@@ -531,114 +507,128 @@ vim.g.phoenix = {
 
 ---- Colors
 
-local richblack = '#020202'
-local lightbronze = '#b99468'
+vim.g.gruvbox_material_colors_override = {
+    bg0 = '#020202',
+    bg1 = '#020202',
+    bg2 = '#020202',
+    bg3 = '#020202',
+    bg4 = '#020202',
+    bg5 = '#020202',
+    bg_dim = '#020202',
+}
+
+vim.cmd.colorscheme 'gruvbox-material'
+
+-- local richblack = '#020202'
+-- local lightbronze = '#b99468'
 local charcoalgray = '#212121'
-local charcoalgraylite = '#1e1e1e'
-local gunmetalblue = '#303040'
-local darkslate = '#222425'
-local ambergold = '#fcaa05'
-local mediumgray = '#404040'
-local jetblack = '#121212'
-local dimgray = '#666666'
-local goldenrod = '#f0c674'
-local brightorange = '#ffaa00'
-local dustyrose = '#dc7575'
-local sunfloweryellow = '#edb211'
-local burntorange = '#de451f'
-local skyblue = '#2895c7'
-local skybluelite = '#2f2f38'
-local brightred = '#ff0000'
-local freshgreen = '#66bc11'
-local limegreen = '#003939'
-local vividvermilion = '#f0500c'
-local goldenyellow = '#f0bb0c'
-local pureblack = '#000000'
-local aquaice = '#8ffff2'
-local dustysage = '#9ba290'
-local coffeebrown = '#63523d'
-local olivedrab = '#6b8e23'
+-- local charcoalgraylite = '#1e1e1e'
+-- local gunmetalblue = '#303040'
+-- local darkslate = '#222425'
+-- local ambergold = '#fcaa05'
+-- local mediumgray = '#404040'
+-- local jetblack = '#121212'
+-- local dimgray = '#666666'
+-- local goldenrod = '#f0c674'
+-- local brightorange = '#ffaa00'
+-- local dustyrose = '#dc7575'
+-- local sunfloweryellow = '#edb211'
+-- local burntorange = '#de451f'
+-- local skyblue = '#2895c7'
+-- local skybluelite = '#2f2f38'
+-- local brightred = '#ff0000'
+-- local freshgreen = '#66bc11'
+-- local limegreen = '#003939'
+-- local vividvermilion = '#f0500c'
+-- local goldenyellow = '#f0bb0c'
+-- local pureblack = '#000000'
+-- local aquaice = '#8ffff2'
+-- local dustysage = '#9ba290'
+-- local coffeebrown = '#63523d'
+-- local olivedrab = '#6b8e23'
 
 local function hl(group, opts)
     vim.api.nvim_set_hl(0, group, opts)
 end
 
-hl('Normal', { fg = lightbronze, bg = richblack })
-hl('NormalFloat', { fg = coffeebrown })
-hl('FloatBorder', { fg = darkslate })
-hl('Cursor', { fg = richblack, bg = freshgreen })
+-- hl('Normal', { fg = lightbronze, bg = richblack })
+-- hl('NormalFloat', { fg = coffeebrown })
+-- hl('FloatBorder', { fg = darkslate })
+-- hl('Cursor', { fg = richblack, bg = freshgreen })
 hl('Visual', { bg = charcoalgray })
-hl('LineNr', { fg = charcoalgray })
-hl('CursorLineNr', { fg = darkslate, bold = true })
-hl('VertSplit', { fg = darkslate })
-hl('StatusLine', { bg = darkslate })
-hl('StatusLineNC', { bg = '#0a0a0a' })
-hl('Pmenu', { bg = charcoalgray })
-hl('PmenuSel', { fg = charcoalgray, bg = lightbronze })
-hl('EndOfBuffer', { fg = richblack })
-hl('Directory', { fg = goldenyellow })
-hl('Title', { fg = lightbronze })
-hl('MoreMsg', { fg = lightbronze })
-hl('ModeMsg', { fg = lightbronze })
-hl('WinSeparator', { fg = darkslate })
-hl('ErrorMsg', { fg = brightred })
-hl('Question', { fg = lightbronze })
-hl('QuickFixLine', { fg = burntorange })
-
--- Syntax
-hl('Comment', { fg = dimgray, italic = true })
-hl('String', { fg = olivedrab })
-hl('Number', { fg = dustyrose })
-hl('Function', { fg = burntorange })
-hl('Keyword', { fg = goldenrod })
-hl('Identifier', { fg = lightbronze })
-hl('Type', { fg = sunfloweryellow })
-hl('Constant', { fg = brightorange })
-hl('Operator', { fg = lightbronze })
-hl('Todo', { fg = vividvermilion, bold = true })
-hl('Statement', { fg = dustyrose })
-hl('PreProc', { fg = dustyrose })
-hl('Special', { fg = lightbronze })
-hl('Delimiter', { fg = lightbronze })
-hl('Ignore', { fg = skybluelite })
-
--- Treesitter
-hl('@comment', { fg = dimgray, italic = true })
-hl('@string', { fg = olivedrab })
-hl('@number', { fg = dustyrose })
-hl('@function', { fg = burntorange })
-hl('@function.call', { fg = burntorange })
-hl('@keyword', { fg = goldenrod })
-hl('@conditional', { fg = dustyrose })
-hl('@repeat', { fg = dustyrose })
-hl('@type', { fg = sunfloweryellow })
-hl('@type.builtin', { fg = sunfloweryellow })
-hl('@constant', { fg = dustyrose })
-hl('@variable', { fg = lightbronze })
-hl('@variable.builtin', { fg = dustyrose })
-hl('@field', { fg = lightbronze })
-hl('@property', { fg = lightbronze })
-hl('@operator', { fg = lightbronze })
-hl('@keyword.import', { link = 'PreProc' })
-hl('@keyword.directive.define', { link = 'PreProc' })
-hl('@keyword.directive', { link = 'PreProc' })
-
--- LSP
-hl('DiagnosticError', { fg = brightred, italic = true })
-hl('DiagnosticWarn', { fg = goldenyellow, italic = true })
-hl('DiagnosticInfo', { fg = skyblue, italic = true })
-hl('DiagnosticHint', { fg = freshgreen, italic = true })
-hl('DiagnosticUnderlineError', { undercurl = true, sp = brightred, italic = true })
-hl('DiagnosticUnderlineWarn', { undercurl = true, sp = goldenyellow, italic = true })
-hl('DiagnosticUnderlineInfo', { undercurl = true, sp = skyblue, italic = true })
-hl('DiagnosticUnderlineHint', { undercurl = true, sp = freshgreen, italic = true })
-hl('LspReferenceText', { bg = pureblack })
-hl('LspReferenceRead', { bg = pureblack })
-hl('LspReferenceWrite', { bg = pureblack })
-hl('LspInlayHint', { fg = charcoalgray, bg = pureblack, italic = true })
-hl('LspCodeLens', { fg = charcoalgray, italic = true })
-
--- Deff
-hl('Removed', { fg = brightred, italic = true })
-hl('Changed', { fg = skyblue, italic = true })
-hl('Added', { fg = freshgreen, italic = true })
+-- hl('LineNr', { fg = charcoalgray })
+-- hl('CursorLineNr', { fg = darkslate, bold = true })
+-- hl('VertSplit', { fg = darkslate })
+-- hl('StatusLine', { bg = darkslate })
+-- hl('StatusLineNC', { bg = '#0a0a0a' })
+-- hl('Pmenu', { bg = charcoalgray })
+-- hl('PmenuSel', { fg = charcoalgray, bg = lightbronze })
+-- hl('EndOfBuffer', { fg = richblack })
+-- hl('Directory', { fg = goldenyellow })
+-- hl('Title', { fg = lightbronze })
+-- hl('MoreMsg', { fg = lightbronze })
+-- hl('ModeMsg', { fg = lightbronze })
+-- hl('WinSeparator', { fg = darkslate })
+-- hl('ErrorMsg', { fg = brightred })
+-- hl('Question', { fg = lightbronze })
+-- hl('QuickFixLine', { fg = burntorange })
+--
+-- -- Syntax
+-- hl('Comment', { fg = dimgray, italic = true })
+-- hl('String', { fg = olivedrab })
+-- hl('Number', { fg = dustyrose })
+-- hl('Function', { fg = burntorange, italic = true })
+-- hl('Keyword', { fg = goldenrod })
+-- hl('Identifier', { fg = lightbronze })
+-- hl('Type', { fg = sunfloweryellow })
+-- hl('Constant', { fg = brightorange })
+-- hl('Operator', { fg = lightbronze })
+-- hl('Todo', { fg = vividvermilion, bold = true, italic = true })
+-- hl('Statement', { fg = dustyrose })
+-- hl('PreProc', { fg = dustyrose })
+-- hl('Special', { fg = lightbronze })
+-- hl('Delimiter', { fg = lightbronze })
+-- hl('Ignore', { fg = skybluelite })
+--
+-- -- Treesitter
+-- hl('@comment', { fg = dimgray, italic = true })
+-- hl('@string', { fg = olivedrab })
+-- hl('@number', { fg = dustyrose })
+-- hl('@function', { fg = burntorange })
+-- hl('@function.call', { fg = burntorange, italic = true })
+-- hl('@keyword', { fg = goldenrod })
+-- hl('@conditional', { fg = dustyrose })
+-- hl('@repeat', { fg = dustyrose })
+-- hl('@type', { fg = sunfloweryellow })
+-- hl('@type.builtin', { fg = sunfloweryellow })
+-- hl('@constant', { fg = dustyrose })
+-- hl('@variable', { fg = lightbronze })
+-- hl('@variable.builtin', { fg = dustyrose })
+-- hl('@field', { fg = lightbronze })
+-- hl('@property', { fg = lightbronze })
+-- hl('@operator', { fg = lightbronze })
+-- hl('@keyword.import', { link = 'PreProc' })
+-- hl('@keyword.directive.define', { link = 'PreProc' })
+-- hl('@keyword.directive', { link = 'PreProc' })
+-- hl('@variable.member', { fg = skyblue })
+--
+-- -- LSP
+-- hl('DiagnosticError', { fg = brightred, italic = true })
+-- hl('DiagnosticWarn', { fg = goldenyellow, italic = true })
+-- hl('DiagnosticInfo', { fg = skyblue, italic = true })
+-- hl('DiagnosticHint', { fg = freshgreen, italic = true })
+-- hl('DiagnosticUnderlineError', { undercurl = true, sp = brightred, italic = true })
+-- hl('DiagnosticUnderlineWarn', { undercurl = true, sp = goldenyellow, italic = true })
+-- hl('DiagnosticUnderlineInfo', { undercurl = true, sp = skyblue, italic = true })
+-- hl('DiagnosticUnderlineHint', { undercurl = true, sp = freshgreen, italic = true })
+-- hl('LspReferenceText', { bg = pureblack })
+-- hl('LspReferenceRead', { bg = pureblack })
+-- hl('LspReferenceWrite', { bg = pureblack })
+-- hl('LspInlayHint', { fg = charcoalgray, bg = pureblack, italic = true })
+-- hl('LspCodeLens', { fg = charcoalgray, italic = true })
+-- hl('@lsp.type.property', { fg = skyblue })
+--
+-- -- Deff
+-- hl('Removed', { fg = brightred, italic = true })
+-- hl('Changed', { fg = skyblue, italic = true })
+-- hl('Added', { fg = freshgreen, italic = true })

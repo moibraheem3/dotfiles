@@ -36,6 +36,7 @@
 
   fileSystems."/disk/Data" = {
     device = "/dev/disk/by-uuid/3c96ddb2-8dce-47fa-8af9-cd973407b610";
+    fsType = "ext4";
     options = [
       "nofail"
       "noatime"
